@@ -1,5 +1,5 @@
 import {
-    JsonDry,
+    JSONDry,
     constants,
     debug,
     IPC_Client,
@@ -17,13 +17,13 @@ export function ipcReq(ipc_client: IPC_Client, data: any, cb: (err: any, res: an
             REQ_CB_REGISTER_WM.set(ipc_client, map = new Map());
             ipc_client.on("message", (msg) => {
                 if (msg.icmd === constants.RES) {
-                    const { req_id, error: error_json, result: result_json } = msg;
+                    const { req_id, data } = msg;
                     const cb = req_cb_register.get(req_id);
                     if (!cb) {
                         throw new Error(`req id:${req_id} no found,should no happen.`)
                     }
-                    cb(error_json ? JsonDry.parse(error_json) : error_json,
-                        result_json ? JsonDry.parse(result_json) : result_json);
+                    const { error, result } = JSON.parse(data);
+                    cb(error, result);
                     req_cb_register.delete(req_id);
                 }
             });
@@ -56,8 +56,7 @@ export function registerIpcRes(ipc_server: IPC_Server, match: (msg) => boolean, 
             socket.send({
                 icmd: constants.RES,
                 req_id: msg.req_id,
-                error: error && JsonDry.stringify(error),
-                result: result && JsonDry.stringify(result)
+                data: JSONDry.stringify({ error, result })
             });
         }
         try {

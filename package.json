@@ -1,21 +1,22 @@
 {
   "name": "ipc-reqres",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "use like http-client require some data from http-server.",
   "types": "dist/src/index.d.ts",
   "main": "dist/src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node dist/test/use-gipc.test.js",
+    "dev": "tsc -w"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^10.0.8",
     "gipc": "file:../gipc/"
   },
   "dependencies": {
     "debug": "^3.1.0",
-    "json-dry": "^1.0.3"
+    "json-dry-factory": "^1.1.0"
   }
 }
