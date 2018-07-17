@@ -12,9 +12,11 @@ export type HttpLikeRequest = {
 }
 
 export const ErrorConstructorList = Object.getOwnPropertyNames(global).filter(name => {
-    const Con = global[name];
-    return Con === Error ||
-        (typeof Con === 'function' && Con.prototype instanceof Error);
+    if (name.endsWith("Error")) {
+        const Con = global[name];
+        return Con === Error ||
+            (typeof Con === 'function' && Con.prototype instanceof Error);
+    }
 }).map(errname => global[errname]);
 
 
